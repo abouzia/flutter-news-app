@@ -1,6 +1,6 @@
 import 'package:flutter_news_app/features/daily_news/domain/entities/article.dart';
 
-class ArticleModel extends ArticleEntitiy {
+class ArticleModel extends ArticleEntity {
   const ArticleModel({
     super.id,
     super.author,

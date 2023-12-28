@@ -13,7 +13,7 @@ class _NewsApiService implements NewsApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://newsapi.org/v2';
+    baseUrl ??= 'e3ebdc1692e645369dc4f2f13f8d2fe3';
   }
 
   final Dio _dio;
@@ -21,22 +21,22 @@ class _NewsApiService implements NewsApiService {
   String? baseUrl;
 
   @override
-  Future<List<ArticleModel>> getTopHeadlines({
+  Future<HttpResponse<List<ArticleModel>>> getTopHeadlines({
+    String? apiKey,
     String? country,
     String? category,
-    String? apiKey,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'apiKey': apiKey,
       r'country': country,
       r'category': category,
-      r'apiKey': apiKey,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<ArticleModel>>(Options(
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<HttpResponse<List<ArticleModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -55,7 +55,8 @@ class _NewsApiService implements NewsApiService {
     var value = _result.data!
         .map((dynamic i) => ArticleModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
