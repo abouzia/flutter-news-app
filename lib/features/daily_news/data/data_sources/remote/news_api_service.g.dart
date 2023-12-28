@@ -13,7 +13,7 @@ class _NewsApiService implements NewsApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'e3ebdc1692e645369dc4f2f13f8d2fe3';
+    baseUrl ??= 'https://newsapi.org/v2';
   }
 
   final Dio _dio;
@@ -35,7 +35,7 @@ class _NewsApiService implements NewsApiService {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<List<ArticleModel>>>(Options(
       method: 'GET',
       headers: _headers,
@@ -52,8 +52,9 @@ class _NewsApiService implements NewsApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => ArticleModel.fromJson(i as Map<String, dynamic>))
+    List<ArticleModel> value = _result.data!['articles']
+        .map<ArticleModel>(
+            (dynamic i) => ArticleModel.fromJson(i as Map<String, dynamic>))
         .toList();
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;

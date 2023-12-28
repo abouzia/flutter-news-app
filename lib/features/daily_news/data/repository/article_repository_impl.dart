@@ -15,6 +15,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
   Future<DataState<List<ArticleEntity>>> getArticles() async {
     try {
       final httpResponse = await _newsApiService.getTopHeadlines(
+        apiKey: kNewsAPIKey,
         country: countryQuery,
         category: categoryQuery,
       );
