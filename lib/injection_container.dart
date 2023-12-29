@@ -7,6 +7,7 @@ import 'package:flutter_news_app/features/daily_news/domain/usecases/get_article
 import 'package:flutter_news_app/features/daily_news/domain/usecases/get_saved_article.dart';
 import 'package:flutter_news_app/features/daily_news/domain/usecases/remove_article.dart';
 import 'package:flutter_news_app/features/daily_news/domain/usecases/save_article.dart';
+import 'package:flutter_news_app/features/daily_news/presentation/bloc/article/local/local_article_bloc.dart';
 import 'package:flutter_news_app/features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -23,18 +24,15 @@ Future<void> init() async {
 
   //! Dependencies
   sl.registerSingleton<NewsApiService>(NewsApiService(sl()));
-
   sl.registerSingleton<ArticleRepository>(ArticleRepositoryImpl(sl(), sl()));
 
   //! Usecases
   sl.registerSingleton<GetArticleUseCase>(GetArticleUseCase(sl()));
-
   sl.registerSingleton<GetSavedArticleUseCase>(GetSavedArticleUseCase(sl()));
-
   sl.registerSingleton<SaveArticleUseCase>(SaveArticleUseCase(sl()));
-
   sl.registerSingleton<RemoveArticleUseCase>(RemoveArticleUseCase(sl()));
 
   //! Blocs
   sl.registerFactory(() => RemoteArticleBloc(sl()));
+  sl.registerFactory(() => LocalArticleBloc(sl(), sl(), sl()));
 }
